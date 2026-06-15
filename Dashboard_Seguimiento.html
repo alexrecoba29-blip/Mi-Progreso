@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Progreso · 8 Semanas</title>
+<style>
+:root{
+  --navy:#1B3A5C;--steel:#2E6CA4;--teal:#2A7A6F;--gold:#B8860B;--burg:#7A2E3A;
+  --slate:#3A3A3A;--mist:#EBF1F6;--sage:#EAF2EC;--cream:#FBF1E0;--fog:#F4F4F4;
+  --line:#D8DEE4;--bg:#FFFFFF;--muted:#6B7280;--hint:#9AA3AD;
+  --ok-bg:#EAF2EC;--ok-tx:#27500A;--warn-bg:#FAEEDA;--warn-tx:#854F0B;--dang-bg:#FCEBEB;--dang-tx:#A32D2D;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#F7F8FA;color:var(--slate);line-height:1.5;padding:16px}
+.wrap{max-width:920px;margin:0 auto}
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.head .t1{font-size:22px;font-weight:600;color:var(--navy)}
+.head .t2{font-size:13px;color:var(--muted)}
+.wbadge{display:inline-flex;align-items:center;gap:6px;background:var(--mist);color:var(--navy);border-radius:8px;padding:6px 14px;font-size:14px;font-weight:600}
+.wctrl{display:flex;gap:6px;align-items:center}
+.wctrl button{background:#fff;border:1px solid var(--line);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;color:var(--navy);display:flex;align-items:center;justify-content:center}
+.wctrl button:hover{background:var(--mist)}
+.nav{display:flex;gap:6px;margin-bottom:20px;border-bottom:1px solid var(--line);padding-bottom:14px;flex-wrap:wrap}
+.nav button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:var(--muted);font-weight:500}
+.nav button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab{display:none}.tab.active{display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.metric{background:var(--fog);border-radius:8px;padding:14px;text-align:center}
+.metric .lb{font-size:12px;color:var(--muted);margin-bottom:4px}
+.metric .vl{font-size:24px;font-weight:600;color:var(--navy)}
+.metric .sb{font-size:11px;color:var(--hint);margin-top:2px}
+.st{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:12px}
+.row{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.row label{font-size:13px;color:var(--muted);min-width:92px}
+.row input,.row select{flex:1;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--slate);min-width:0}
+.btn{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 16px;font-size:14px;cursor:pointer;color:var(--navy);width:100%;margin-top:10px;font-weight:500}
+.btn:hover{background:var(--fog)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.primary:hover{background:#15304d}
+.badge{font-size:11px;padding:3px 9px;border-radius:7px;font-weight:600;white-space:nowrap}
+.badge.ok{background:var(--ok-bg);color:var(--ok-tx)}
+.badge.warn{background:var(--warn-bg);color:var(--warn-tx)}
+.badge.danger{background:var(--dang-bg);color:var(--dang-tx)}
+.hr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--fog);font-size:13px;gap:8px}
+.hr:last-child{border-bottom:none}
+.tag{font-size:11px;padding:2px 7px;border-radius:5px;background:var(--fog);color:var(--muted);white-space:nowrap}
+.barw{background:var(--fog);border-radius:5px;height:9px;overflow:hidden;flex:1}
+.bar{height:9px;border-radius:5px;background:var(--steel);transition:width .3s}
+.cr{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--fog);font-size:13px;gap:10px}
+.cr:last-child{border-bottom:none}
+.cr select{font-size:13px;padding:5px 9px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--slate)}
+.empty{font-size:13px;color:var(--hint);text-align:center;padding:20px 0}
+.note{margin-top:10px;padding:11px;background:var(--fog);border-radius:8px;font-size:12px;color:var(--muted)}
+.foot{text-align:center;font-size:12px;color:var(--hint);margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
+@media(max-width:640px){
+  .g4{grid-template-columns:1fr 1fr}
+  .g2{grid-template-columns:1fr}
+  .nav button{flex:1;padding:8px 6px;font-size:12px}
+  .head .t1{font-size:19px}
+  body{padding:12px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="head">
+  <div>
+    <div class="t1">Mi progreso</div>
+    <div class="t2">8 semanas · Torso / Pierna · Fase de definición</div>
+  </div>
+  <div class="wctrl">
+    <button id="wprev" title="Semana anterior">‹</button>
+    <div class="wbadge">📅 <span id="wlabel">Semana 1</span></div>
+    <button id="wnext" title="Semana siguiente">›</button>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="active" data-tab="resumen">Resumen</button>
+  <button data-tab="entreno">Entreno</button>
+  <button data-tab="nutricion">Nutrición</button>
+  <button data-tab="progreso">Progreso</button>
+  <button data-tab="bloque">Fin de bloque</button>
+</div>
+
+<div id="t-resumen" class="tab active">
+  <div class="g4">
+    <div class="metric"><div class="lb">Semana</div><div class="vl" id="m-sem">1</div><div class="sb">de 8</div></div>
+    <div class="metric"><div class="lb">Entrenos</div><div class="vl" id="m-ent">0</div><div class="sb">de 4 esta sem.</div></div>
+    <div class="metric"><div class="lb">Días dieta</div><div class="vl" id="m-die">0</div><div class="sb">de 7 esta sem.</div></div>
+    <div class="metric"><div class="lb">Completadas</div><div class="vl" id="m-comp">0</div><div class="sb">de 8 sem.</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="st">Cargas máximas esta semana</div>
+      <div id="r-cargas"><div class="empty">Sin datos aún</div></div>
+    </div>
+    <div class="card">
+      <div class="st">Adherencia</div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px"><span>Entrenos</span><span id="a-ent">0%</span></div>
+        <div class="barw"><div class="bar" id="ab-ent" style="width:0%"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px"><span>Nutrición</span><span id="a-die">0%</span></div>
+        <div class="barw"><div class="bar" id="ab-die" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="st">Últimos registros</div>
+    <div id="r-ultimos"><div class="empty">Empieza registrando tu primer entreno o día de dieta</div></div>
+  </div>
+</div>
+
+<div id="t-entreno" class="tab">
+  <div class="g2">
+    <div class="card">
+      <div class="st">Registrar ejercicio</div>
+      <div class="row"><label>Día</label><select id="e-dia"><option>Día 1 · Pierna A</option><option>Día 2 · Torso A</option><option>Día 3 · Pierna B</option><option>Día 4 · Torso B</option></select></div>
+      <div class="row"><label>Ejercicio</label><input id="e-ej" placeholder="Prensa de piernas"></div>
+      <div class="row"><label>Peso (kg)</label><input id="e-peso" type="number" placeholder="80"></div>
+      <div class="row"><label>Series×Reps</label><input id="e-sr" placeholder="4×10"></div>
+      <div class="row"><label>RPE</label><select id="e-rpe"><option>7</option><option selected>8</option><option>8-9</option><option>9</option></select></div>
+      <div class="row"><label>Nota</label><input id="e-nota" placeholder="bien, subir peso"></div>
+      <button class="btn primary" id="btn-ent">Guardar ejercicio</button>
+    </div>
+    <div class="card">
+      <div class="st">¿Cómo me sentí hoy?</div>
+      <div class="row"><label>Energía</label><select id="e-energia"><option>Alta</option><option selected>Normal</option><option>Baja</option></select></div>
+      <div class="row"><label>Motivación</label><select id="e-mot"><option>Alta</option><option selected>Normal</option><option>Baja</option></select></div>
+      <div class="row"><label>Molestia</label><select id="e-dol"><option selected>Ninguna</option><option>Leve</option><option>Moderada</option><option>Alta</option></select></div>
+      <div class="row"><label>Sueño</label><select id="e-sue"><option>Muy bien</option><option selected>Bien</option><option>Regular</option><option>Mal</option></select></div>
+      <div class="note">Anota esto en el último ejercicio del día. Alimenta tu checklist de fin de bloque.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="st">Entrenos — semana <span id="e-wnum">1</span></div>
+    <div id="r-hent"><div class="empty">Sin registros esta semana</div></div>
+  </div>
+</div>
+
+<div id="t-nutricion" class="tab">
+  <div class="g2">
+    <div class="card">
+      <div class="st">Registrar día</div>
+      <div class="row"><label>Día</label><select id="n-dia"><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option></select></div>
+      <div class="row"><label>Versión</label><select id="n-ver"><option>Plan completo 1,800</option><option>Día flexible (salida)</option><option>Descanso dieta 2,400</option></select></div>
+      <div class="row"><label>Proteína g</label><input id="n-prot" type="number" placeholder="160"></div>
+      <div class="row"><label>¿Cumpliste?</label><select id="n-cum"><option value="1">Sí, completo</option><option value="0.5">Parcial</option><option value="0">No</option></select></div>
+      <div class="row"><label>Nota</label><input id="n-nota" placeholder="salida sábado ok"></div>
+      <button class="btn primary" id="btn-nut">Guardar día</button>
+    </div>
+    <div class="card">
+      <div class="st">Resumen semana <span id="n-wnum">1</span></div>
+      <div class="g2" style="margin-bottom:8px">
+        <div class="metric"><div class="lb">Días</div><div class="vl" id="n-dias">0</div><div class="sb">de 7</div></div>
+        <div class="metric"><div class="lb">Adherencia</div><div class="vl" id="n-adh">0%</div><div class="sb">al plan</div></div>
+      </div>
+      <div class="metric" style="margin-bottom:8px"><div class="lb">Proteína promedio</div><div class="vl" id="n-pavg">— g</div><div class="sb">objetivo 160 g</div></div>
+      <div class="metric"><div class="lb">Días flexibles</div><div class="vl" id="n-flex">0</div><div class="sb">sistema del préstamo</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="st">Nutrición — semana actual</div>
+    <div id="r-hnut"><div class="empty">Sin registros esta semana</div></div>
+  </div>
+</div>
+
+<div id="t-progreso" class="tab">
+  <div class="g2">
+    <div class="card">
+      <div class="st">Registrar progreso (cada 2 semanas)</div>
+      <div class="row"><label>Semana</label><input id="p-sem" type="number" min="1" max="8" placeholder="2"></div>
+      <div class="row"><label>Abdomen</label><select id="p-abd"><option value="2">Mejora notable</option><option value="1" selected>Mejora leve</option><option value="0">Sin cambio</option><option value="-1">Empeoró</option></select></div>
+      <div class="row"><label>Ropa</label><select id="p-ropa"><option value="1">Más suelta</option><option value="0" selected>Igual</option><option value="-1">Más ajustada</option></select></div>
+      <div class="row"><label>Fuerza</label><select id="p-fue"><option value="1">Sube o igual</option><option value="0" selected>Baja leve</option><option value="-1">Baja mucho</option></select></div>
+      <div class="row"><label>Nota</label><input id="p-nota" placeholder="abdomen más plano"></div>
+      <button class="btn primary" id="btn-pro">Guardar</button>
+    </div>
+    <div class="card">
+      <div class="st">Último registro</div>
+      <div id="r-indpro"><div class="empty">Sin registros aún</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="st">Historial de progreso físico</div>
+    <div id="r-hpro"><div class="empty">Cada 2 semanas: misma luz, mañana en ayunas, foto frente y perfil.</div></div>
+  </div>
+</div>
+
+<div id="t-bloque" class="tab">
+  <div class="card" style="margin-bottom:14px">
+    <div class="st">Checklist de fin de bloque — semanas 4 y 8</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:14px">Responde al terminar la semana 4 y la 8. Te dice si necesitas descarga o puedes seguir.</div>
+    <div class="cr"><span>¿Ha bajado tu motivación por entrenar?</span><select id="b1"><option value="0">No</option><option value="1">Sí</option></select></div>
+    <div class="cr"><span>¿Ha empeorado tu sueño?</span><select id="b2"><option value="0">No</option><option value="1">Sí</option></select></div>
+    <div class="cr"><span>¿Tus cargas o reps van a menos?</span><select id="b3"><option value="0">No</option><option value="1">Sí</option></select></div>
+    <div class="cr"><span>¿Tienes más estrés?</span><select id="b4"><option value="0">No</option><option value="1">Sí</option></select></div>
+    <div class="cr"><span>¿Más molestias o dolores?</span><select id="b5"><option value="0">No</option><option value="1">Sí</option></select></div>
+    <button class="btn primary" style="margin-top:14px" id="btn-blo">Evaluar bloque</button>
+  </div>
+  <div id="r-resblo"></div>
+  <div class="card">
+    <div class="st">Historial de evaluaciones</div>
+    <div id="r-hblo"><div class="empty">Sin evaluaciones aún</div></div>
+  </div>
+</div>
+
+<div class="foot">Tus datos se guardan en este dispositivo (navegador). Úsalo en celular o computadora.</div>
+
+</div>
+
+<script>
+(function(){
+var KEY='moises_dash_v1';
+var DB={wk:1,ent:[],nut:[],pro:[],blo:{}};
+var wk=1;
+
+function $(id){return document.getElementById(id)}
+function load(){try{var r=localStorage.getItem(KEY);if(r){DB=JSON.parse(r);wk=DB.wk||1}}catch(e){}}
+function save(){try{DB.wk=wk;localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}}
+function fecha(){return new Date().toLocaleDateString('es-PE')}
+
+document.querySelectorAll('.nav button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+    document.querySelectorAll('.nav button').forEach(function(x){x.classList.remove('active')});
+    $('t-'+this.dataset.tab).classList.add('active');
+    this.classList.add('active');
+  });
+});
+
+$('wprev').addEventListener('click',function(){chgWk(-1)});
+$('wnext').addEventListener('click',function(){chgWk(1)});
+$('btn-ent').addEventListener('click',saveEnt);
+$('btn-nut').addEventListener('click',saveNut);
+$('btn-pro').addEventListener('click',savePro);
+$('btn-blo').addEventListener('click',evalBlo);
+
+function chgWk(d){wk=Math.max(1,Math.min(8,wk+d));save();paintWk();renderAll()}
+function paintWk(){
+  $('wlabel').textContent='Semana '+wk;
+  $('m-sem').textContent=wk;
+  $('e-wnum').textContent=wk;
+  $('n-wnum').textContent=wk;
+  $('m-comp').textContent=(wk-1);
+}
+
+function saveEnt(){
+  DB.ent.push({wk:wk,dia:$('e-dia').value,ej:$('e-ej').value||'Sin nombre',peso:$('e-peso').value||'',sr:$('e-sr').value||'',rpe:$('e-rpe').value,nota:$('e-nota').value||'',energia:$('e-energia').value,mot:$('e-mot').value,dol:$('e-dol').value,sue:$('e-sue').value,fecha:fecha(),ts:Date.now()});
+  save();
+  $('e-ej').value='';$('e-peso').value='';$('e-sr').value='';$('e-nota').value='';
+  renderEnt();renderResumen();
+}
+function saveNut(){
+  DB.nut.push({wk:wk,dia:$('n-dia').value,ver:$('n-ver').value,prot:$('n-prot').value||'',cum:parseFloat($('n-cum').value),nota:$('n-nota').value||'',fecha:fecha(),ts:Date.now()});
+  save();
+  $('n-prot').value='';$('n-nota').value='';
+  renderNut();renderResumen();
+}
+function savePro(){
+  DB.pro.push({sem:$('p-sem').value||wk,abd:parseInt($('p-abd').value),ropa:parseInt($('p-ropa').value),fue:parseInt($('p-fue').value),nota:$('p-nota').value||'',fecha:fecha(),ts:Date.now()});
+  save();
+  $('p-nota').value='';
+  renderPro();
+}
+function evalBlo(){
+  var v=[1,2,3,4,5].map(function(i){return parseInt($('b'+i).value)});
+  var tot=v.reduce(function(a,b){return a+b},0);
+  var soloDol=v[4]===1&&v.slice(0,4).every(function(x){return x===0});
+  var txt,cl;
+  if(tot<=1){txt='Sigues bien — pasa al siguiente ciclo';cl='ok'}
+  else if(soloDol){txt='Semana de cargas ligeras y altas repeticiones';cl='warn'}
+  else{txt='Haz una semana de descarga antes de seguir';cl='danger'}
+  DB.blo['s'+wk]={sem:wk,tot:tot,txt:txt,fecha:fecha()};
+  save();
+  var bc=cl==='ok'?'#27500A':cl==='warn'?'#854F0B':'#A32D2D';
+  $('r-resblo').innerHTML='<div class="card" style="margin-bottom:14px;border-left:3px solid '+bc+'"><div style="font-size:12px;color:var(--muted);margin-bottom:6px">Resultado — semana '+wk+'</div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="badge '+cl+'">'+tot+' de 5 señales</span><span style="font-size:14px;color:var(--slate)">'+txt+'</span></div></div>';
+  renderBlo();
+}
+
+function renderResumen(){
+  var ent=DB.ent.filter(function(e){return e.wk===wk});
+  var nut=DB.nut.filter(function(n){return n.wk===wk});
+  $('m-ent').textContent=ent.length;
+  $('m-die').textContent=nut.length;
+  var pe=Math.round(Math.min(100,ent.length/4*100));
+  var pd=Math.round(Math.min(100,nut.length/7*100));
+  $('a-ent').textContent=pe+'%';$('a-die').textContent=pd+'%';
+  $('ab-ent').style.width=pe+'%';$('ab-die').style.width=pd+'%';
+  var all=ent.concat(nut).sort(function(a,b){return b.ts-a.ts}).slice(0,5);
+  $('r-ultimos').innerHTML=all.length?all.map(function(r){return '<div class="hr"><span>'+(r.ej||r.dia||'—')+'</span><div style="display:flex;gap:6px;align-items:center">'+(r.peso?'<span class="tag">'+r.peso+' kg</span>':'')+(r.ver?'<span class="tag">nutrición</span>':'')+'<span style="font-size:11px;color:var(--hint)">'+(r.fecha||'')+'</span></div></div>'}).join(''):'<div class="empty">Empieza registrando tu primer entreno o día de dieta</div>';
+  var byEj={};
+  ent.forEach(function(e){if(e.ej&&e.peso){(byEj[e.ej]=byEj[e.ej]||[]).push(parseFloat(e.peso)||0)}});
+  var ks=Object.keys(byEj).slice(0,5);
+  $('r-cargas').innerHTML=ks.length?ks.map(function(k){return '<div class="hr"><span style="font-size:12px">'+k+'</span><span class="tag">'+Math.max.apply(null,byEj[k])+' kg</span></div>'}).join(''):'<div class="empty">Sin datos aún</div>';
+}
+function renderEnt(){
+  var items=DB.ent.filter(function(e){return e.wk===wk}).sort(function(a,b){return b.ts-a.ts});
+  $('r-hent').innerHTML=items.length?items.map(function(r){return '<div class="hr"><div><div style="font-weight:600;font-size:13px">'+r.ej+'</div><div style="font-size:11px;color:var(--muted)">'+r.dia+' · '+r.fecha+'</div></div><div style="display:flex;gap:6px;align-items:center">'+(r.peso?'<span class="tag">'+r.peso+' kg</span>':'')+(r.sr?'<span class="tag">'+r.sr+'</span>':'')+'<span class="badge ok">RPE '+r.rpe+'</span></div></div>'}).join(''):'<div class="empty">Sin registros esta semana</div>';
+}
+function renderNut(){
+  var items=DB.nut.filter(function(n){return n.wk===wk}).sort(function(a,b){return b.ts-a.ts});
+  $('n-dias').textContent=items.length;
+  if(items.length){
+    $('n-adh').textContent=Math.round(items.reduce(function(a,b){return a+b.cum},0)/items.length*100)+'%';
+    var pr=items.filter(function(i){return i.prot}).map(function(i){return parseFloat(i.prot)||0});
+    $('n-pavg').textContent=pr.length?Math.round(pr.reduce(function(a,b){return a+b},0)/pr.length)+' g':'— g';
+    $('n-flex').textContent=items.filter(function(i){return i.ver&&i.ver.indexOf('flexible')>=0}).length;
+  }else{$('n-adh').textContent='0%';$('n-pavg').textContent='— g';$('n-flex').textContent='0'}
+  $('r-hnut').innerHTML=items.length?items.map(function(r){return '<div class="hr"><div><div style="font-weight:600;font-size:13px">'+r.dia+'</div><div style="font-size:11px;color:var(--muted)">'+r.ver+'</div></div><div style="display:flex;gap:6px;align-items:center">'+(r.prot?'<span class="tag">'+r.prot+' g</span>':'')+'<span class="badge '+(r.cum>=1?'ok':r.cum>=0.5?'warn':'danger')+'">'+(r.cum>=1?'Cumplido':r.cum>=0.5?'Parcial':'No')+'</span></div></div>'}).join(''):'<div class="empty">Sin registros esta semana</div>';
+}
+function renderPro(){
+  var items=DB.pro.slice().sort(function(a,b){return b.ts-a.ts});
+  if(items.length){
+    var u=items[0];
+    $('r-indpro').innerHTML='<div class="hr"><span>Abdomen</span><span class="badge '+(u.abd>0?'ok':u.abd===0?'warn':'danger')+'">'+(u.abd>1?'Mejora notable':u.abd===1?'Mejora leve':u.abd===0?'Sin cambio':'Empeoró')+'</span></div><div class="hr"><span>Ropa</span><span class="badge '+(u.ropa>0?'ok':u.ropa===0?'warn':'danger')+'">'+(u.ropa>0?'Más suelta':u.ropa===0?'Igual':'Más ajustada')+'</span></div><div class="hr"><span>Fuerza</span><span class="badge '+(u.fue>=0?'ok':'danger')+'">'+(u.fue>0?'Sube':u.fue===0?'Se mantiene':'Baja')+'</span></div><div style="font-size:11px;color:var(--hint);margin-top:8px">Última: '+u.fecha+'</div>';
+    $('r-hpro').innerHTML=items.map(function(r){return '<div class="hr"><div><div style="font-weight:600;font-size:13px">Semana '+r.sem+'</div><div style="font-size:11px;color:var(--muted)">'+(r.nota||'Sin nota')+'</div></div><div style="display:flex;gap:4px"><span class="badge '+(r.abd>0?'ok':r.abd===0?'warn':'danger')+'">Abd</span><span class="badge '+(r.fue>=0?'ok':'danger')+'">Fza</span></div></div>'}).join('');
+  }else{
+    $('r-indpro').innerHTML='<div class="empty">Sin registros aún</div>';
+    $('r-hpro').innerHTML='<div class="empty">Cada 2 semanas: misma luz, mañana en ayunas, foto frente y perfil.</div>';
+  }
+}
+function renderBlo(){
+  var items=Object.keys(DB.blo).map(function(k){return DB.blo[k]}).sort(function(a,b){return b.sem-a.sem});
+  $('r-hblo').innerHTML=items.length?items.map(function(r){return '<div class="hr"><div><div style="font-weight:600;font-size:13px">Semana '+r.sem+'</div><div style="font-size:12px;color:var(--muted)">'+r.txt+'</div></div><span class="badge '+(r.tot<=1?'ok':r.tot<=2?'warn':'danger')+'">'+r.tot+'/5</span></div>'}).join(''):'<div class="empty">Sin evaluaciones aún</div>';
+}
+function renderAll(){renderResumen();renderEnt();renderNut();renderPro();renderBlo()}
+
+load();paintWk();renderAll();
+})();
+</script>
+</body>
+</html>
