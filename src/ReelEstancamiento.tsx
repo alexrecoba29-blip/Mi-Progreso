@@ -3,6 +3,7 @@ import {
   AbsoluteFill,
   Audio,
   Img,
+  OffthreadVideo,
   Sequence,
   interpolate,
   spring,
@@ -66,7 +67,7 @@ const useSnap = (delay = 0, durationInFrames = 18) => {
 };
 
 // ───────────── Audio opcional (no falla si falta voz.mp3) ─────────────
-const useFileExists = (src: string) => {
+const useFileExists = (src: string, typeRe: RegExp = /audio|mpeg|octet-stream/i) => {
   const {delayRender, continueRender} = useDelayRender();
   const [handle] = useState(() => delayRender('Comprobando audio opcional'));
   const [exists, setExists] = useState(false);
@@ -76,7 +77,7 @@ const useFileExists = (src: string) => {
     fetch(src, {method: 'HEAD'})
       .then((r) => {
         const type = r.headers.get('content-type') ?? '';
-        if (!cancelled) setExists(r.ok && /audio|mpeg|octet-stream/i.test(type));
+        if (!cancelled) setExists(r.ok && typeRe.test(type));
       })
       .catch(() => undefined)
       .finally(() => continueRender(handle));
@@ -92,6 +93,29 @@ const OptionalVoice: React.FC = () => {
   const src = staticFile('voz.mp3');
   const exists = useFileExists(src);
   return exists ? <Audio src={src} /> : null;
+};
+
+// Saludo animado de Doc XT (opcional): public/doc-saludo.mp4. Fondo negro -> se mezcla con 'screen'.
+const OptionalGreeting: React.FC = () => {
+  const src = staticFile('doc-saludo.mp4');
+  const exists = useFileExists(src, /video|mp4|octet-stream/i);
+  if (!exists) return null;
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 1000,
+        height: 700,
+        display: 'flex',
+        justifyContent: 'center',
+        mixBlendMode: 'screen',
+      }}
+    >
+      <OffthreadVideo src={src} muted style={{height: 700, width: 700, objectFit: 'cover'}} />
+    </div>
+  );
 };
 
 // ───────────── Fondo: negro mate + cuadrícula tech ─────────────
@@ -418,6 +442,7 @@ export const ReelEstancamiento: React.FC = () => {
       <OptionalVoice />
       <Sequence from={S1.from} durationInFrames={S1.dur} premountFor={15}>
         <Scene1 />
+        <OptionalGreeting />
       </Sequence>
       <Sequence from={S2.from} durationInFrames={S2.dur} premountFor={15}>
         <Scene2 />
