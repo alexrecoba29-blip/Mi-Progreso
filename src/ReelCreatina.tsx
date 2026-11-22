@@ -9,6 +9,7 @@ import {
   useCurrentFrame,
 } from 'remotion';
 import {
+  OptionalGreeting,
   Background,
   BG,
   CARD,
@@ -24,26 +25,29 @@ import {
 
 // ───────────── Formato ─────────────
 export const C_FPS = 30;
-export const C_DURATION = 780; // se ajusta al largo de voz-creatina.mp3
+export const C_DURATION = 830; // 27.7 s (voz 26.4 s + cierre)
 
 const sec = (s: number) => Math.round(s * C_FPS);
 const hl = (t: string) => <span style={{color: RED}}>{t}</span>;
 
 // ───────────── Escenas (frames) — ajustables con la voz real ─────────────
-const S1 = {from: 0, dur: sec(5)}; //  gancho + MITO
-const S2 = {from: sec(5), dur: sec(13)}; // 3 datos
-const S3 = {from: sec(18), dur: C_DURATION - sec(18)}; // qué hacer + cierre
+const S1 = {from: 0, dur: sec(4.9)}; //  0–4.9 s gancho + MITO
+const S2 = {from: sec(4.9), dur: sec(15.85) - sec(4.9)}; // 4.9–15.85 s datos
+const S3 = {from: sec(15.85), dur: C_DURATION - sec(15.85)}; // 15.85 s–fin cierre
 
 // ───────────── Subtítulos (afinar tiempos con la voz real) ─────────────
 const CUES: Cue[] = [
-  {start: sec(0.1), end: sec(1.8), text: <>¡Hey, soy {hl('Doc XT')}!</>},
-  {start: sec(2.0), end: sec(4.8), text: <>¿La creatina te hace ver hinchado? {hl('¡Mito!')}</>},
-  {start: sec(5.0), end: sec(9.0), text: <>El agua se queda {hl('dentro del músculo')}, no debajo de la piel.</>},
-  {start: sec(9.2), end: sec(13.5), text: <>Mejora tu {hl('fuerza')} y tu rendimiento.</>},
-  {start: sec(13.7), end: sec(18.0), text: <>Los estudios usan {hl('3 a 5 g')} al día, todos los días.</>},
-  {start: sec(18.2), end: sec(21.0), text: <>Sin fase de carga, sin ciclos.</>},
-  {start: sec(21.2), end: sec(24.0), text: <>Monohidrato, con sello de laboratorio, y constancia.</>},
-  {start: sec(24.2), end: sec(26.0), text: <>Si tienes dudas de salud, consulta a tu médico.</>},
+  {start: sec(0.12), end: sec(1.5), text: <>¡Hey, soy {hl('Doc XT')}!</>},
+  {start: sec(1.92), end: sec(4.55), text: <>¿La creatina te hace ver hinchado? {hl('¡Mito!')}</>},
+  {start: sec(5.0), end: sec(6.8), text: <>El agua se queda {hl('dentro del músculo')},</>},
+  {start: sec(6.94), end: sec(8.05), text: <>no debajo de la piel.</>},
+  {start: sec(8.26), end: sec(9.95), text: <>Mejora tu {hl('fuerza')} y tu rendimiento,</>},
+  {start: sec(10.04), end: sec(11.7), text: <>y es de lo más estudiado que hay.</>},
+  {start: sec(11.92), end: sec(15.8), text: <>Los estudios usan {hl('3 a 5 g')} al día, todos los días.</>},
+  {start: sec(15.94), end: sec(17.85), text: <>{hl('Sin fase de carga')}, sin ciclos.</>},
+  {start: sec(18.0), end: sec(20.95), text: <>{hl('Monohidrato')}, con sello de laboratorio y constancia.</>},
+  {start: sec(21.3), end: sec(23.5), text: <>Si tienes dudas de salud, consulta a tu {hl('médico')}.</>},
+  {start: sec(23.72), end: sec(26.2), text: <>Asesoría {hl('XT LABS')}. Enlace en el perfil.</>},
 ];
 
 const OptionalVoice: React.FC = () => {
@@ -95,10 +99,8 @@ const Subtitles: React.FC = () => {
 const Hook: React.FC = () => {
   const frame = useCurrentFrame();
   const a = useSnap(4, 16);
-  const stamp = useSnap(60, 10);
-  const doc = useSnap(8, 22);
+  const stamp = useSnap(118, 10);
   const out = interpolate(frame, [S1.dur - 8, S1.dur], [1, 0], {extrapolateLeft: 'clamp'});
-  const bob = Math.sin((frame / C_FPS) * Math.PI * 2) * 6;
   return (
     <AbsoluteFill style={{opacity: out}}>
       <div
@@ -141,21 +143,7 @@ const Hook: React.FC = () => {
           ¡MITO!
         </div>
       </div>
-      <div
-        style={{
-          position: 'absolute',
-          top: 1040,
-          left: 0,
-          right: 0,
-          height: 680,
-          display: 'flex',
-          justifyContent: 'center',
-          opacity: doc,
-          transform: `translateY(${interpolate(doc, [0, 1], [80, 0]) + bob}px)`,
-        }}
-      >
-        <Img src={staticFile('personaje/doc-xt-base.png')} style={{height: 680, objectFit: 'contain'}} />
-      </div>
+      <OptionalGreeting />
     </AbsoluteFill>
   );
 };
@@ -193,9 +181,9 @@ const Facts: React.FC = () => {
       }}
     >
       <div style={{display: 'flex', flexDirection: 'column', gap: 34}}>
-        <Fact n="1" big="EL AGUA QUEDA DENTRO DEL MÚSCULO" small="NO DEBAJO DE LA PIEL" delay={6} />
-        <Fact n="2" big="MÁS FUERZA Y RENDIMIENTO" small="MUCHA EVIDENCIA CIENTÍFICA" delay={110} />
-        <Fact n="3" big="3 A 5 G AL DÍA" small="TODOS LOS DÍAS · SIN FASE DE CARGA" delay={230} />
+        <Fact n="1" big="EL AGUA QUEDA DENTRO DEL MÚSCULO" small="NO DEBAJO DE LA PIEL" delay={3} />
+        <Fact n="2" big="MÁS FUERZA Y RENDIMIENTO" small="MUCHA EVIDENCIA CIENTÍFICA" delay={101} />
+        <Fact n="3" big="3 A 5 G AL DÍA" small="TODOS LOS DÍAS" delay={213} />
       </div>
     </AbsoluteFill>
   );
@@ -222,8 +210,8 @@ const Check: React.FC<{text: string; delay: number}> = ({text, delay}) => {
 
 const Close: React.FC = () => {
   const frame = useCurrentFrame();
-  const btn = useSnap(110, 16);
-  const foot = useSnap(130, 16);
+  const btn = useSnap(236, 16);
+  const foot = useSnap(280, 16);
   const pulse = 1 + 0.015 * Math.sin((frame / C_FPS) * Math.PI * 2);
   return (
     <AbsoluteFill
@@ -234,10 +222,10 @@ const Close: React.FC = () => {
       }}
     >
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 34}}>
-        <div style={{fontFamily: FONT, fontSize: 44, color: RED, letterSpacing: 6}}>QUÉ HACER</div>
-        <Check text="MONOHIDRATO" delay={4} />
-        <Check text="CON SELLO DE LABORATORIO" delay={34} />
-        <Check text="CONSTANCIA" delay={64} />
+        <div style={{fontFamily: FONT, fontSize: 44, color: RED, letterSpacing: 6}}>SIN FASE DE CARGA · SIN CICLOS</div>
+        <Check text="MONOHIDRATO" delay={63} />
+        <Check text="CON SELLO DE LABORATORIO" delay={87} />
+        <Check text="CONSTANCIA" delay={127} />
       </div>
       <div style={{marginTop: 70, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 34}}>
         <div

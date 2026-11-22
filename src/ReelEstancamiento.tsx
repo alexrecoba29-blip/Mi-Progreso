@@ -99,7 +99,7 @@ const OptionalVoice: React.FC = () => {
 };
 
 // Saludo animado de Doc XT (opcional): public/doc-saludo.mp4. Fondo negro -> se mezcla con 'screen'.
-const OptionalGreeting: React.FC = () => {
+export const OptionalGreeting: React.FC = () => {
   const src = staticFile('doc-saludo.mp4');
   const exists = useFileExists(src, /video|mp4|octet-stream/i);
   const frame = useCurrentFrame();
@@ -118,7 +118,22 @@ const OptionalGreeting: React.FC = () => {
           mixBlendMode: 'screen',
         }}
       >
-        <OffthreadVideo src={src} muted style={{height: 700, width: 700, objectFit: 'cover'}} />
+        <OffthreadVideo
+          src={src}
+          muted
+          style={{
+            height: 700,
+            width: 700,
+            objectFit: 'cover',
+            // difumina los bordes para que el fondo del clip se funda con el del reel
+            WebkitMaskImage:
+              'linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 12%, #000 80%, transparent 100%)',
+            WebkitMaskComposite: 'source-in',
+            maskImage:
+              'linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 12%, #000 80%, transparent 100%)',
+            maskComposite: 'intersect',
+          }}
+        />
       </div>
     );
   }

@@ -9,6 +9,7 @@ import {
   useCurrentFrame,
 } from 'remotion';
 import {
+  OptionalGreeting,
   Background,
   BG,
   CARD,
@@ -97,9 +98,7 @@ const Welcome: React.FC = () => {
   const frame = useCurrentFrame();
   const a = useSnap(4, 16);
   const b = useSnap(16, 16);
-  const doc = useSnap(10, 22);
   const out = interpolate(frame, [S1.dur - 8, S1.dur], [1, 0], {extrapolateLeft: 'clamp'});
-  const bob = Math.sin((frame / B_FPS) * Math.PI * 2) * 6;
   return (
     <AbsoluteFill style={{opacity: out}}>
       <div
@@ -136,21 +135,7 @@ const Welcome: React.FC = () => {
           <span style={{color: RED}}>XT</span> <span style={{color: WHITE}}>LABS</span>
         </div>
       </div>
-      <div
-        style={{
-          position: 'absolute',
-          top: 1010,
-          left: 0,
-          right: 0,
-          height: 700,
-          display: 'flex',
-          justifyContent: 'center',
-          opacity: doc,
-          transform: `translateY(${interpolate(doc, [0, 1], [80, 0]) + bob}px)`,
-        }}
-      >
-        <Img src={staticFile('personaje/doc-xt-base.png')} style={{height: 700, objectFit: 'contain'}} />
-      </div>
+      <OptionalGreeting />
     </AbsoluteFill>
   );
 };
