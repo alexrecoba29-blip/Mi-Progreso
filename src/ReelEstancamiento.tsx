@@ -20,7 +20,7 @@ loadFont();
 export const FPS = 30;
 export const WIDTH = 1080;
 export const HEIGHT = 1920;
-export const DURATION = 900; // 30 s
+export const DURATION = 810; // 27 s (voz real: 24.8 s + cierre)
 
 // ───────────── Marca ─────────────
 const BG = '#0B0B0D';
@@ -35,23 +35,26 @@ const SAFE = {top: 250, bottom: 380, left: 70, right: 120};
 const SUB_BOTTOM = SAFE.bottom + 20; // distancia del subtítulo al borde inferior
 
 // ───────────── Escenas (frames) ─────────────
-const S1 = {from: 0, dur: 90}; //   0–3 s
-const S2 = {from: 90, dur: 360}; //  3–15 s
-const S3 = {from: 450, dur: 300}; // 15–25 s
-const S4 = {from: 750, dur: 150}; // 25–30 s
+const S1 = {from: 0, dur: 150}; //   0–5.0 s  gancho + 'a ver, déjame revisar'
+const S2 = {from: 150, dur: 310}; //  5.0–15.3 s barras
+const S3 = {from: 460, dur: 180}; // 15.3–21.3 s fases
+const S4 = {from: 640, dur: 170}; // 21.3–27 s cierre
 
 // ───────────── Subtítulos (edítalos para que coincidan con tu voz) ─────────────
 type Cue = {start: number; end: number; text: React.ReactNode};
 const sec = (s: number) => Math.round(s * FPS);
 const hl = (t: string) => <span style={{color: RED}}>{t}</span>;
 const CUES: Cue[] = [
-  {start: sec(0.3), end: sec(2.9), text: <>Entrenas fuerte… {hl('pero te ves igual.')}</>},
-  {start: sec(3.4), end: sec(7.4), text: <>El estímulo en el gym está al {hl('95%')}.</>},
-  {start: sec(7.6), end: sec(11.4), text: <>Pero tu recuperación apenas llega al {hl('35%')}.</>},
-  {start: sec(11.6), end: sec(14.8), text: <>Y sin {hl('estrategia por fase')}, no hay resultado.</>},
-  {start: sec(15.4), end: sec(19.8), text: <>{hl('Fuerza y desarrollo')}: una fase para construir.</>},
-  {start: sec(20.2), end: sec(24.8), text: <>{hl('Definición y estética')}: otra para afinar.</>},
-  {start: sec(25.4), end: sec(29.6), text: <>Consulta tu asesoría con {hl('XT LABS')}.</>},
+  {start: sec(0.05), end: sec(2.05), text: <>¡Entrenas fuerte… {hl('pero te ves igual!')}</>},
+  {start: sec(2.5), end: sec(3.05), text: <>¿Por qué?</>},
+  {start: sec(3.3), end: sec(5.0), text: <>A ver, déjame revisar los datos.</>},
+  {start: sec(5.4), end: sec(8.1), text: <>El estímulo en el gym está al {hl('95%')}.</>},
+  {start: sec(8.5), end: sec(11.2), text: <>¡Pero tu recuperación apenas llega al {hl('35%')}!</>},
+  {start: sec(11.45), end: sec(12.3), text: <>¡Ay, caramba!</>},
+  {start: sec(12.55), end: sec(15.0), text: <>Y sin {hl('estrategia por fase')}, no hay resultado.</>},
+  {start: sec(15.5), end: sec(18.0), text: <>{hl('Fase 1')}: fuerza y desarrollo, para construir.</>},
+  {start: sec(18.55), end: sec(21.1), text: <>{hl('Fase 2')}: definición y estética, para afinar.</>},
+  {start: sec(21.55), end: sec(24.8), text: <>Consulta tu asesoría con {hl('XT LABS')}. ¡Enlace en el perfil!</>},
 ];
 
 // ───────────── Animaciones secas (sin rebote) ─────────────
@@ -99,21 +102,43 @@ const OptionalVoice: React.FC = () => {
 const OptionalGreeting: React.FC = () => {
   const src = staticFile('doc-saludo.mp4');
   const exists = useFileExists(src, /video|mp4|octet-stream/i);
-  if (!exists) return null;
+  const frame = useCurrentFrame();
+  const enter = useSnap(8, 22);
+  if (exists) {
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 1000,
+          height: 700,
+          display: 'flex',
+          justifyContent: 'center',
+          mixBlendMode: 'screen',
+        }}
+      >
+        <OffthreadVideo src={src} muted style={{height: 700, width: 700, objectFit: 'cover'}} />
+      </div>
+    );
+  }
+  // Respaldo: Doc XT estático con un leve movimiento
+  const bob = Math.sin((frame / FPS) * Math.PI * 2) * 6;
   return (
     <div
       style={{
         position: 'absolute',
         left: 0,
         right: 0,
-        top: 1000,
+        top: 1010,
         height: 700,
         display: 'flex',
         justifyContent: 'center',
-        mixBlendMode: 'screen',
+        opacity: enter,
+        transform: `translateY(${interpolate(enter, [0, 1], [80, 0]) + bob}px)`,
       }}
     >
-      <OffthreadVideo src={src} muted style={{height: 700, width: 700, objectFit: 'cover'}} />
+      <Img src={staticFile('personaje/doc-xt-base.png')} style={{height: 700, objectFit: 'contain'}} />
     </div>
   );
 };
@@ -178,9 +203,9 @@ const Scene1: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        padding: `${SAFE.top}px ${SAFE.right}px ${SAFE.bottom}px ${SAFE.left}px`,
+        padding: `${SAFE.top + 60}px ${SAFE.right}px 0 ${SAFE.left}px`,
         opacity: out,
       }}
     >
@@ -275,8 +300,8 @@ const Scene2: React.FC = () => {
           POR QUÉ NO AVANZAS
         </div>
         <Meter label="ESTÍMULO EN GYM" value={95} color={WHITE} delay={6} />
-        <Meter label="RECUPERACIÓN" value={35} color={RED} delay={30} />
-        <Meter label="ESTRATEGIA POR FASE" value={30} color={RED} delay={54} />
+        <Meter label="RECUPERACIÓN" value={35} color={RED} delay={100} />
+        <Meter label="ESTRATEGIA POR FASE" value={30} color={RED} delay={222} />
       </div>
     </AbsoluteFill>
   );
@@ -326,8 +351,8 @@ const Scene3: React.FC = () => {
       }}
     >
       <div style={{display: 'flex', flexDirection: 'column', gap: 48}}>
-        <PhaseCard tag="FASE 1" title={['FUERZA Y', 'DESARROLLO']} litAt={20} />
-        <PhaseCard tag="FASE 2" title={['DEFINICIÓN Y', 'ESTÉTICA']} litAt={130} />
+        <PhaseCard tag="FASE 1" title={['FUERZA Y', 'DESARROLLO']} litAt={10} />
+        <PhaseCard tag="FASE 2" title={['DEFINICIÓN Y', 'ESTÉTICA']} litAt={95} />
       </div>
     </AbsoluteFill>
   );
