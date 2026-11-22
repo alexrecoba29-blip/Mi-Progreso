@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XT Labs · Comunidad de Nutrición, Entrenamiento y Farmacología</title>
+<meta name="description" content="Guías claras y basadas en evidencia sobre nutrición, entrenamiento y farmacología deportiva.">
+<style>
+:root{
+  --bg:#0B0D10;--card:#14181D;--card2:#1B2128;--line:#262D36;
+  --tx:#E8ECF1;--muted:#8B95A3;--acc:#C6FF3D;--acc-tx:#0B0D10;
+  --nut:#4ADE80;--ent:#38BDF8;--far:#F59E0B;
+  --radius:14px;
+}
+@media (prefers-color-scheme: light){
+  :root{--bg:#F5F7FA;--card:#fff;--card2:#EEF1F5;--line:#DDE2E9;--tx:#12161B;--muted:#5C6673;--acc:#1F7A00;--acc-tx:#fff;--nut:#15803D;--ent:#0369A1;--far:#B45309}
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--tx);line-height:1.5}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-weight:800;letter-spacing:.5px;font-size:18px}
+.logo b{color:var(--acc)}
+.top nav{display:flex;gap:16px;font-size:14px;color:var(--muted)}
+.top nav a:hover{color:var(--tx)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--acc);color:var(--acc-tx);font-weight:700;border-radius:10px;padding:10px 18px;font-size:14px;border:0;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.08)}
+/* hero */
+.hero{padding:56px 0 32px;text-align:center}
+.hero .tag{display:inline-block;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--acc);border:1px solid var(--line);border-radius:99px;padding:4px 12px;margin-bottom:16px}
+.hero h1{font-size:clamp(30px,6vw,52px);line-height:1.1;font-weight:800;margin-bottom:14px}
+.hero h1 span{color:var(--acc)}
+.hero p{color:var(--muted);max-width:560px;margin:0 auto 24px;font-size:17px}
+.hero .cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* pillars */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 40px}
+.pillar{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;cursor:pointer;transition:.15s}
+.pillar:hover{transform:translateY(-2px);border-color:var(--c)}
+.pillar .ic{font-size:26px}
+.pillar h3{font-size:16px;margin:6px 0 2px;color:var(--c)}
+.pillar p{font-size:13px;color:var(--muted)}
+/* filters */
+.bar{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.search{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;color:var(--tx);font-size:15px;outline:none}
+.search:focus{border-color:var(--acc)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:99px;padding:6px 14px;font-size:13px;cursor:pointer}
+.chip.on{background:var(--acc);color:var(--acc-tx);border-color:var(--acc);font-weight:700}
+.count{font-size:13px;color:var(--muted);margin:4px 0 14px}
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.gcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:.15s;border-top:3px solid var(--c)}
+.gcard:hover{transform:translateY(-2px);background:var(--card2)}
+.meta{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+.cat{color:var(--c);font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+.lvl{border:1px solid var(--line);border-radius:6px;padding:1px 8px}
+.gcard h3{font-size:17px;line-height:1.3}
+.gcard p{font-size:14px;color:var(--muted);flex:1}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tags span{font-size:12px;color:var(--muted)}
+.empty{text-align:center;color:var(--muted);padding:40px 0}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:flex-end;justify-content:center;z-index:50}
+.modal.open{display:flex}
+.sheet{background:var(--card);width:100%;max-width:680px;max-height:90vh;overflow:auto;border-radius:20px 20px 0 0;padding:24px 20px 32px;border-top:3px solid var(--c)}
+@media(min-width:700px){.modal{align-items:center}.sheet{border-radius:20px}}
+.sheet h2{font-size:22px;margin:8px 0 12px}
+.sheet h4{margin:16px 0 6px;font-size:14px;color:var(--c);text-transform:uppercase;letter-spacing:.8px}
+.sheet ul{padding-left:20px;color:var(--tx)}
+.sheet li{margin:4px 0}
+.sheet p{color:var(--muted)}
+.close{float:right;background:var(--card2);border:0;color:var(--tx);width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer}
+.warn{background:color-mix(in srgb,var(--far) 14%,transparent);border:1px solid var(--far);border-radius:10px;padding:10px 14px;font-size:13px;margin-top:16px;color:var(--tx)}
+/* sections */
+section{margin:48px 0}
+section h2{font-size:24px;margin-bottom:6px}
+section .sub{color:var(--muted);margin-bottom:18px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.box h3{font-size:16px;margin-bottom:4px}
+.box p{font-size:14px;color:var(--muted)}
+.join{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:20px;padding:32px 20px;text-align:center}
+footer{border-top:1px solid var(--line);padding:28px 0 48px;font-size:12px;color:var(--muted)}
+footer p{margin-top:8px;max-width:760px}
+@media(max-width:640px){.pillars{grid-template-columns:1fr}.top nav{display:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#top" class="logo">XT<b>LABS</b></a>
+    <nav>
+      <a href="#guias">Guías</a>
+      <a href="#proceso">Cómo funciona</a>
+      <a href="#unete">Únete</a>
+    </nav>
+    <a class="btn" href="#unete">Unirme</a>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+  <div class="hero">
+    <span class="tag">Comunidad · Ciencia aplicada</span>
+    <h1>Nutrición, entrenamiento y <span>farmacología deportiva</span> sin humo</h1>
+    <p>Guías cortas, claras y basadas en evidencia. Aprende, aplica y mide tu progreso.</p>
+    <div class="cta">
+      <a class="btn" href="#guias">Ver guías</a>
+      <a class="btn ghost" href="#unete">Seguirme en redes</a>
+    </div>
+  </div>
+
+  <div class="pillars">
+    <div class="pillar" style="--c:var(--nut)" data-pillar="Nutrición"><div class="ic">🥗</div><h3>Nutrición</h3><p>Calorías, macros, hidratación y suplementos con respaldo.</p></div>
+    <div class="pillar" style="--c:var(--ent)" data-pillar="Entrenamiento"><div class="ic">🏋️</div><h3>Entrenamiento</h3><p>Volumen, progresión, descanso y técnica.</p></div>
+    <div class="pillar" style="--c:var(--far)" data-pillar="Farmacología"><div class="ic">🧪</div><h3>Farmacología</h3><p>Educación, riesgos, análisis y supervisión médica.</p></div>
+  </div>
+
+  <section id="guias" style="margin-top:0">
+    <h2>Biblioteca de guías</h2>
+    <p class="sub">Filtra por tema y nivel. Toca una tarjeta para leerla.</p>
+    <div class="bar">
+      <input class="search" id="q" type="search" placeholder="Buscar: creatina, proteína, sueño, análisis de sangre…">
+      <div class="chips" id="fcat"></div>
+      <div class="chips" id="flvl"></div>
+    </div>
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="proceso">
+    <h2>Cómo funciona</h2>
+    <p class="sub">Tres pasos. Sin complicarte.</p>
+    <div class="cols">
+      <div class="box"><h3>1 · Aprende</h3><p>Lee una guía de 3 minutos con puntos accionables.</p></div>
+      <div class="box"><h3>2 · Aplica</h3><p>Elige un solo cambio y hazlo por 2 semanas.</p></div>
+      <div class="box"><h3>3 · Mide</h3><p>Peso, medidas, fotos y rendimiento. Lo que no se mide no mejora.</p></div>
+    </div>
+  </section>
+
+  <section id="unete">
+    <div class="join">
+      <h2>Únete a la comunidad</h2>
+      <p class="sub">Contenido nuevo cada semana. Preguntas, rutinas y novedades de XT Labs.</p>
+      <div class="cta" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <!-- TODO Alex: reemplaza los # por tus links reales -->
+        <a class="btn" href="#" id="lnk-wa">WhatsApp</a>
+        <a class="btn ghost" href="#" id="lnk-ig">Instagram</a>
+        <a class="btn ghost" href="#" id="lnk-fb">Facebook</a>
+        <a class="btn ghost" href="#" id="lnk-tt">TikTok</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>XT Labs</strong>
+    <p>Contenido educativo, no sustituye la consulta con un médico, nutricionista o profesional de la salud. La información sobre sustancias es solo informativa y de reducción de riesgos; no promovemos su uso ni damos protocolos de dosis. Muchas sustancias son ilegales sin prescripción y su uso conlleva riesgos graves. Los resultados varían entre personas.</p>
+  </div>
+</footer>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const CATS={"Nutrición":"var(--nut)","Entrenamiento":"var(--ent)","Farmacología":"var(--far)"};
+const LVLS=["Principiante","Intermedio","Avanzado"];
+
+const GUIDES=[
+{t:"Calorías y proteína: lo único que tienes que calcular primero",c:"Nutrición",l:"Principiante",d:"Cómo estimar tu mantenimiento y cuánta proteína necesitas según tu meta.",tags:["calorías","proteína","pérdida de grasa"],
+ body:[["Pasos",["Estima tu mantenimiento: peso (kg) × 30–33 kcal como punto de partida","Déficit de 300–500 kcal para bajar grasa; superávit de 200–300 para ganar músculo","Proteína: 1.6–2.2 g por kg de peso al día","Pésate 3–4 veces por semana y usa el promedio semanal","Ajusta 100–200 kcal si en 2–3 semanas no hay cambio"]],["Error común",["Cambiar todo cada semana. Mantén un plan 2–3 semanas antes de ajustar."]]]},
+{t:"Creatina monohidrato: el suplemento con más evidencia",c:"Nutrición",l:"Principiante",d:"Qué hace, cuánto tomar y mitos que debes olvidar.",tags:["suplementos","creatina","fuerza"],
+ body:[["Lo básico",["Mejora fuerza, potencia y masa magra de forma consistente","Dosis habitual en estudios: 3–5 g al día, todos los días","No necesitas fase de carga ni ciclos","Cualquier hora del día sirve; la constancia es lo que importa"]],["Mitos",["No daña riñón en personas sanas con dosis estándar","No causa calvicie comprobada","La retención de agua es intracelular, no te 'hincha'"]],["Compra",["Busca monohidrato con sello de terceros (ej. Creapure o testeo de laboratorio)"]]]},
+{t:"Hidratación y electrolitos para entrenar mejor",c:"Nutrición",l:"Principiante",d:"Cuánta agua tomar y cuándo sí necesitas sodio.",tags:["agua","electrolitos","rendimiento"],
+ body:[["Reglas simples",["Orina amarillo claro = buen indicador","Toma agua de forma constante, no solo al entrenar","Sesiones de más de 60–90 min o con mucho sudor: suma sodio","Evita beber en exceso: más no siempre es mejor"]]]},
+{t:"Cafeína como ayuda ergogénica: cuánto y cuándo",c:"Nutrición",l:"Intermedio",d:"Dosis por kg, momento de toma y cómo no arruinar tu sueño.",tags:["cafeína","pre-entreno","sueño"],
+ body:[["Evidencia",["Rango estudiado: 3–6 mg por kg de peso, 30–60 min antes","Efecto en rendimiento y percepción de esfuerzo","Evita tomarla en las 8 horas previas a dormir"],],["Cuidado",["Hipertensión, ansiedad o arritmias: consulta médico antes","Revisa la cafeína total del día (café + pre-entreno + bebidas)"]]]},
+{t:"Hipertrofia: volumen, frecuencia y cercanía al fallo",c:"Entrenamiento",l:"Intermedio",d:"Cuántas series por músculo por semana realmente necesitas.",tags:["hipertrofia","volumen","series"],
+ body:[["Guía práctica",["10–20 series efectivas por músculo por semana para la mayoría","Frecuencia de 2 veces por semana por músculo funciona muy bien","Termina las series a 0–3 repeticiones del fallo","Rango de 6–20 repeticiones; elige ejercicios que puedas progresar"]],["Progresión",["Sube repeticiones primero, luego peso","Anota todo: lo que no se registra no se progresa"]]]},
+{t:"Tu primera rutina: Full Body 3 días",c:"Entrenamiento",l:"Principiante",d:"Plantilla lista para empezar sin lesionarte.",tags:["rutina","principiantes","full body"],
+ body:[["Estructura (3 días no consecutivos)",["Sentadilla o prensa — 3×8–12","Press de banca o flexiones — 3×8–12","Remo con mancuerna o polea — 3×8–12","Peso muerto rumano — 2×8–10","Press militar — 2×8–12","Plancha — 2×30–45 s"]],["Reglas",["Calienta 5–10 min","Deja 1–2 repeticiones en reserva","Aprende técnica antes de subir carga"]]]},
+{t:"Sueño y recuperación: el 'suplemento' gratis",c:"Entrenamiento",l:"Principiante",d:"Por qué dormir mal frena tu progreso y cómo arreglarlo.",tags:["sueño","recuperación","descanso"],
+ body:[["Checklist",["7–9 horas, horario constante","Cuarto oscuro y fresco","Corta cafeína 8 h antes","Pantallas fuera 30–60 min antes","Si cuesta dormir con frecuencia, consulta un profesional"]]]},
+{t:"Periodización simple: cuándo cargar y cuándo descargar",c:"Entrenamiento",l:"Avanzado",d:"Mesociclos de 4–8 semanas y semanas de descarga.",tags:["periodización","descarga","avanzado"],
+ body:[["Esquema",["Semanas 1–4: sube volumen o carga gradualmente","Semana 5: descarga (reduce ~40–50% volumen)","Señales para descargar: fatiga persistente, sueño malo, rendimiento a la baja","Cambia ejercicios cada 2–3 mesociclos, no cada semana"]]]},
+{t:"Qué es el doping y por qué hay que informarse",c:"Farmacología",l:"Principiante",d:"Conceptos básicos: sustancias prohibidas, legalidad y salud.",tags:["doping","legalidad","salud"],
+ body:[["Conceptos",["Doping: uso de sustancias o métodos prohibidos por organismos antidopaje (WADA)","Muchas sustancias requieren prescripción y su venta sin ella es ilegal en muchos países","Los 'suplementos' pueden estar contaminados con sustancias prohibidas","Si compites, revisa siempre la lista vigente de tu federación"]]],
+ warn:true},
+{t:"Esteroides anabólicos: efectos adversos y riesgos reales",c:"Farmacología",l:"Intermedio",d:"Lo que dice la literatura médica sobre cuerpo, hormonas y corazón.",tags:["riesgos","hormonas","salud"],
+ body:[["Riesgos documentados",["Supresión del eje hormonal natural y posible infertilidad","Alteración de lípidos y mayor riesgo cardiovascular","Hipertensión, retención de líquidos, acné, caída de cabello","Efectos psicológicos: irritabilidad, ansiedad, depresión al suspender","Daño hepático con algunas sustancias orales"]],["Mensaje clave",["Esta guía NO da dosis ni protocolos. Si alguien decide usar sustancias, debe hacerlo con supervisión médica y estudios de seguimiento."]]],
+ warn:true},
+{t:"Análisis de sangre: qué mirar y por qué",c:"Farmacología",l:"Intermedio",d:"Panel básico para atletas: hormonal, lipídico, hepático y renal.",tags:["análisis","salud","chequeo"],
+ body:[["Panel de referencia (habla con tu médico)",["Hemograma completo y hematocrito","Perfil lipídico (colesterol total, LDL, HDL, triglicéridos)","Función hepática (AST, ALT) y renal (creatinina)","Glucosa y HbA1c","Hormonas según indicación médica (testosterona, tiroides)"]],["Cuándo",["Antes de empezar cualquier programa y cada 3–6 meses, según tu médico"]]],
+ warn:true},
+{t:"Suplementos con evidencia vs. marketing",c:"Farmacología",l:"Principiante",d:"Qué sí funciona, qué es dudoso y cómo leer una etiqueta.",tags:["suplementos","etiquetas","evidencia"],
+ body:[["Con buena evidencia",["Creatina monohidrato","Cafeína","Proteína en polvo (comodidad, no magia)","Vitamina D si hay deficiencia comprobada"]],["Con evidencia limitada o dudosa",["Quemadores de grasa 'milagro'","Boosters de testosterona sin respaldo","Mezclas con 'blends propietarios' sin dosis declaradas"]],["Tip",["Si la etiqueta no dice cuánto trae de cada ingrediente, desconfía."]]]}
+];
+
+const state={q:"",cat:"Todo",lvl:"Todos"};
+const $=s=>document.querySelector(s);
+
+function chips(el,items,key){
+  el.innerHTML=items.map(i=>`<button class="chip ${state[key]===i?'on':''}" data-v="${i}">${i}</button>`).join("");
+  el.onclick=e=>{const v=e.target.dataset.v;if(!v)return;state[key]=v;chips(el,items,key);render();};
+}
+function render(){
+  const q=state.q.toLowerCase();
+  const list=GUIDES.map((g,i)=>({...g,i})).filter(g=>
+    (state.cat==="Todo"||g.c===state.cat)&&(state.lvl==="Todos"||g.l===state.lvl)&&
+    (!q||(g.t+g.d+g.tags.join(" ")).toLowerCase().includes(q)));
+  $("#count").textContent=list.length+" guía"+(list.length===1?"":"s");
+  $("#grid").innerHTML=list.length?list.map(g=>`
+    <article class="gcard" style="--c:${CATS[g.c]}" data-i="${g.i}">
+      <div class="meta"><span class="cat">${g.c}</span><span class="lvl">${g.l}</span></div>
+      <h3>${g.t}</h3><p>${g.d}</p>
+      <div class="tags">${g.tags.map(t=>`<span>#${t}</span>`).join("")}</div>
+    </article>`).join(""):`<div class="empty">Nada por aquí. Prueba otra búsqueda.</div>`;
+}
+function open(i){
+  const g=GUIDES[i];
+  $("#sheet").style.setProperty("--c",CATS[g.c]);
+  $("#sheet").innerHTML=`<button class="close" aria-label="Cerrar">✕</button>
+    <div class="meta"><span class="cat" style="color:${CATS[g.c]}">${g.c}</span><span class="lvl">${g.l}</span></div>
+    <h2>${g.t}</h2><p>${g.d}</p>
+    ${g.body.map(([h,items])=>`<h4>${h}</h4><ul>${items.map(x=>`<li>${x}</li>`).join("")}</ul>`).join("")}
+    ${g.warn?`<div class="warn">⚠️ Información educativa y de reducción de riesgos. No es consejo médico ni incentivo de uso. Consulta siempre a un profesional de la salud.</div>`:""}`;
+  $("#modal").classList.add("open");
+}
+$("#grid").onclick=e=>{const c=e.target.closest(".gcard");if(c)open(+c.dataset.i);};
+$("#modal").onclick=e=>{if(e.target.id==="modal"||e.target.classList.contains("close"))$("#modal").classList.remove("open");};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#modal").classList.remove("open");});
+$("#q").oninput=e=>{state.q=e.target.value;render();};
+document.querySelectorAll(".pillar").forEach(p=>p.onclick=()=>{state.cat=p.dataset.pillar;chips($("#fcat"),["Todo",...Object.keys(CATS)],"cat");render();$("#guias").scrollIntoView();});
+chips($("#fcat"),["Todo",...Object.keys(CATS)],"cat");
+chips($("#flvl"),["Todos",...LVLS],"lvl");
+render();
+</script>
+</body>
+</html>
