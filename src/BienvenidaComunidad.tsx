@@ -24,25 +24,27 @@ import {
 
 // ───────────── Formato ─────────────
 export const B_FPS = 30;
-export const B_DURATION = 690; // 23 s (ajusta al largo de voz-bienvenida.mp3)
+export const B_DURATION = 560; // 18.7 s (voz 17.2 s + cierre)
 
 const sec = (s: number) => Math.round(s * B_FPS);
 const hl = (t: string) => <span style={{color: RED}}>{t}</span>;
 
 // ───────────── Escenas (frames) — ajustables con la voz real ─────────────
-const S1 = {from: 0, dur: sec(5)}; //   bienvenida
-const S2 = {from: sec(5), dur: sec(10)}; // 3 pilares
-const S3 = {from: sec(15), dur: B_DURATION - sec(15)}; // sígueme + cierre
+const S1 = {from: 0, dur: sec(5.5)}; //   0–5.5 s  bienvenida
+const S2 = {from: sec(5.5), dur: sec(13.1) - sec(5.5)}; // 5.5–13.1 s pilares
+const S3 = {from: sec(13.1), dur: B_DURATION - sec(13.1)}; // 13.1 s–fin sígueme
 
 // ───────────── Subtítulos (afinar tiempos con la voz real) ─────────────
 const CUES: Cue[] = [
-  {start: sec(0.2), end: sec(2.2), text: <>¡Hey! ¡Bienvenido a {hl('XT LABS')}!</>},
-  {start: sec(2.4), end: sec(4.6), text: <>Soy {hl('Doc XT')}. Aquí no hay mitos ni humo.</>},
-  {start: sec(5.0), end: sec(9.0), text: <>Te explico {hl('nutrición')}, {hl('entrenamiento')}…</>},
-  {start: sec(9.2), end: sec(12.0), text: <>…y {hl('farmacología deportiva')}.</>},
-  {start: sec(12.2), end: sec(14.8), text: <>Todo con ciencia. Todo educativo.</>},
-  {start: sec(15.2), end: sec(19.0), text: <>Sígueme, activa las notificaciones y mándame tus dudas.</>},
-  {start: sec(19.4), end: sec(22.5), text: <>¡Bienvenido al {hl('laboratorio')}!</>},
+  {start: sec(0.08), end: sec(2.0), text: <>¡Hey! ¡Bienvenido a {hl('XT LABS')}!</>},
+  {start: sec(2.06), end: sec(3.0), text: <>Soy {hl('Doc XT')}.</>},
+  {start: sec(3.27), end: sec(5.43), text: <>Aquí no hay mitos de gimnasio, ni {hl('humo')}.</>},
+  {start: sec(5.67), end: sec(7.2), text: <>Te voy a explicar {hl('nutrición')},</>},
+  {start: sec(7.28), end: sec(8.55), text: <>{hl('entrenamiento')}</>},
+  {start: sec(8.64), end: sec(10.5), text: <>y {hl('farmacología deportiva')},</>},
+  {start: sec(10.63), end: sec(13.07), text: <>todo con ciencia, todo educativo, y en cortito.</>},
+  {start: sec(13.16), end: sec(15.68), text: <>Sígueme, activa las notificaciones y mándame tus dudas.</>},
+  {start: sec(15.9), end: sec(17.24), text: <>¡Bienvenido al {hl('laboratorio')}!</>},
 ];
 
 const OptionalVoice: React.FC = () => {
@@ -194,9 +196,9 @@ const Pillars: React.FC = () => {
         AQUÍ APRENDES
       </div>
       <div style={{display: 'flex', flexDirection: 'column', gap: 34}}>
-        <Pillar n="01" title="NUTRICIÓN" sub="COME CON ESTRATEGIA" delay={6} />
-        <Pillar n="02" title="ENTRENAMIENTO" sub="TRAIN SMART, NO SOLO DURO" delay={60} />
-        <Pillar n="03" title="FARMACOLOGÍA" sub="EDUCACIÓN Y RIESGOS" delay={115} />
+        <Pillar n="01" title="NUTRICIÓN" sub="COME CON ESTRATEGIA" delay={5} />
+        <Pillar n="02" title="ENTRENAMIENTO" sub="ENTRENA CON MÉTODO, NO SOLO DURO" delay={53} />
+        <Pillar n="03" title="FARMACOLOGÍA" sub="EDUCACIÓN Y RIESGOS" delay={94} />
       </div>
     </AbsoluteFill>
   );
@@ -206,8 +208,8 @@ const Pillars: React.FC = () => {
 const Follow: React.FC = () => {
   const frame = useCurrentFrame();
   const t = useSnap(2, 16);
-  const btn = useSnap(24, 16);
-  const foot = useSnap(60, 16);
+  const btn = useSnap(30, 16);
+  const foot = useSnap(84, 16);
   const pulse = 1 + 0.015 * Math.sin((frame / B_FPS) * Math.PI * 2);
   return (
     <AbsoluteFill
