@@ -1,6 +1,7 @@
 import {Composition} from 'remotion';
 import {ReelEstancamiento, FPS, DURATION, WIDTH, HEIGHT} from './ReelEstancamiento';
 import {BienvenidaComunidad, B_FPS, B_DURATION} from './BienvenidaComunidad';
+import {ReelCreatina, C_FPS, C_DURATION} from './ReelCreatina';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -18,6 +19,14 @@ export const RemotionRoot: React.FC = () => {
         component={BienvenidaComunidad}
         durationInFrames={B_DURATION}
         fps={B_FPS}
+        width={WIDTH}
+        height={HEIGHT}
+      />
+      <Composition
+        id="ReelCreatina"
+        component={ReelCreatina}
+        durationInFrames={C_DURATION}
+        fps={C_FPS}
         width={WIDTH}
         height={HEIGHT}
       />
