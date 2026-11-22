@@ -197,7 +197,7 @@ const Meter: React.FC<{label: string; value: number; color: string; delay: numbe
 const Scene2: React.FC = () => {
   const frame = useCurrentFrame();
   const imgIn = useSnap(18, 24);
-  const zoom = interpolate(frame, [0, S2.dur], [1, 1.12]);
+  const zoom = interpolate(frame, [0, S2.dur], [1, 1.08]);
   const fadeIn = interpolate(frame, [0, 8], [0, 1], {extrapolateRight: 'clamp'});
   const fadeOut = interpolate(frame, [S2.dur - 8, S2.dur], [1, 0], {extrapolateLeft: 'clamp'});
   return (
@@ -219,10 +219,10 @@ const Scene2: React.FC = () => {
           style={{
             position: 'absolute',
             left: '50%',
-            bottom: 0,
-            height: '100%',
+            bottom: 160,
+            height: 820,
             transform: `translateX(-50%) scale(${zoom})`,
-            transformOrigin: '50% 80%',
+            transformOrigin: '50% 10%',
             objectFit: 'contain',
           }}
         />
