@@ -99,8 +99,8 @@ const OptionalVoice: React.FC = () => {
 };
 
 // Saludo animado de Doc XT (opcional): public/doc-saludo.mp4. Fondo negro -> se mezcla con 'screen'.
-export const OptionalGreeting: React.FC = () => {
-  const src = staticFile('doc-saludo.mp4');
+export const OptionalGreeting: React.FC<{file?: string}> = ({file = 'doc-saludo.mp4'}) => {
+  const src = staticFile(file);
   const exists = useFileExists(src, /video|mp4|octet-stream/i);
   const frame = useCurrentFrame();
   const enter = useSnap(8, 22);
