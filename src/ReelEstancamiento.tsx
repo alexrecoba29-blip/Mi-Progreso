@@ -23,16 +23,16 @@ export const HEIGHT = 1920;
 export const DURATION = 810; // 27 s (voz real: 24.8 s + cierre)
 
 // ───────────── Marca ─────────────
-const BG = '#0B0B0D';
-const WHITE = '#FFFFFF';
-const RED = '#E52521';
-const CARD = '#16161B';
-const FONT = `${fontFamily}, 'Bebas Neue', Impact, 'Arial Narrow', sans-serif`;
+export const BG = '#0B0B0D';
+export const WHITE = '#FFFFFF';
+export const RED = '#E52521';
+export const CARD = '#16161B';
+export const FONT = `${fontFamily}, 'Bebas Neue', Impact, 'Arial Narrow', sans-serif`;
 
 // ───────────── Zonas seguras de Instagram Reels ─────────────
 // Arriba ~250 px (nombre de cuenta), abajo ~380 px (caption + botones), derecha ~120 px (like/comentar).
-const SAFE = {top: 250, bottom: 380, left: 70, right: 120};
-const SUB_BOTTOM = SAFE.bottom + 20; // distancia del subtítulo al borde inferior
+export const SAFE = {top: 250, bottom: 380, left: 70, right: 120};
+export const SUB_BOTTOM = SAFE.bottom + 20; // distancia del subtítulo al borde inferior
 
 // ───────────── Escenas (frames) ─────────────
 const S1 = {from: 0, dur: 150}; //   0–5.0 s  gancho + 'a ver, déjame revisar'
@@ -41,7 +41,7 @@ const S3 = {from: 460, dur: 180}; // 15.3–21.3 s fases
 const S4 = {from: 640, dur: 170}; // 21.3–27 s cierre
 
 // ───────────── Subtítulos (edítalos para que coincidan con tu voz) ─────────────
-type Cue = {start: number; end: number; text: React.ReactNode};
+export type Cue = {start: number; end: number; text: React.ReactNode};
 const sec = (s: number) => Math.round(s * FPS);
 const hl = (t: string) => <span style={{color: RED}}>{t}</span>;
 const CUES: Cue[] = [
@@ -58,7 +58,7 @@ const CUES: Cue[] = [
 ];
 
 // ───────────── Animaciones secas (sin rebote) ─────────────
-const useSnap = (delay = 0, durationInFrames = 18) => {
+export const useSnap = (delay = 0, durationInFrames = 18) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   return spring({
@@ -70,7 +70,7 @@ const useSnap = (delay = 0, durationInFrames = 18) => {
 };
 
 // ───────────── Audio opcional (no falla si falta voz.mp3) ─────────────
-const useFileExists = (src: string, typeRe: RegExp = /audio|mpeg|octet-stream/i) => {
+export const useFileExists = (src: string, typeRe: RegExp = /audio|mpeg|octet-stream/i) => {
   const {delayRender, continueRender} = useDelayRender();
   const [handle] = useState(() => delayRender('Comprobando audio opcional'));
   const [exists, setExists] = useState(false);
@@ -144,7 +144,7 @@ const OptionalGreeting: React.FC = () => {
 };
 
 // ───────────── Fondo: negro mate + cuadrícula tech ─────────────
-const Background: React.FC = () => {
+export const Background: React.FC = () => {
   const frame = useCurrentFrame();
   const drift = (frame * 0.25) % 90;
   return (
